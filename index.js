@@ -56,8 +56,8 @@ app.post("/api/items", async (req, res) => {
     if (error) return res.status(500).json({ error });
     res.json(data);
   } catch (err) {
-    console.error("Errore scraping:", err);
-    res.status(500).json({ error: "Errore nel recupero dei dati" });
+    console.error("❌ Errore POST /api/items:", err.message, err.stack);
+  res.status(500).json({ error: "Errore nel recupero dei dati", details: err.message });
   }
 });
 

@@ -53,13 +53,19 @@ app.post("/api/items", async (req, res) => {
       .select()
       .single();
 
-    if (error) return res.status(500).json({ error });
+    if (error) {
+      console.error("❌ Errore Supabase:", error.message, error.details);
+      return res.status(500).json({ error: "Errore salvataggio Supabase", details: error.message });
+    }
+
     res.json(data);
   } catch (err) {
-    console.error("❌ Errore POST /api/items:", err.message, err.stack);
-  res.status(500).json({ error: "Errore nel recupero dei dati", details: err.message });
+    console.error("❌ Errore FETCH/INSERT:", err.message);
+    console.error("📍 Stack:", err.stack);
+    res.status(500).json({ error: "Errore nel recupero dei dati", details: err.message });
   }
 });
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("✅ Server attivo sulla porta " + PORT));

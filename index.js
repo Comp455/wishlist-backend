@@ -7,14 +7,15 @@ import fetch from "node-fetch";
 dotenv.config();
 const app = express();
 
-// ✅ CORS FIX: accetta solo richieste dal tuo frontend su Vercel
 const corsOptions = {
   origin: "https://wishlist-frontend-virid.vercel.app",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"]
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+  optionsSuccessStatus: 204
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // <-- GESTIONE PRELIGHT!
 app.use(express.json());
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
